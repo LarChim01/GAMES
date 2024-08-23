@@ -1,13 +1,5 @@
-# Вот
-# полный
-# код
-# программы
-# крестики - нолики
-# на
-# Python
-# для
-# двух
-# игроков:
+# крестики - нолики консольная
+# для  двух игроков:
 # Инициализация карты
 maps = [1, 2, 3,
         4, 5, 6,
@@ -39,17 +31,35 @@ def print_maps():
     print(maps[7], end=" ")
     print(maps[8])
 
+def check(string): # проверка число ли мы ввели
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
 
 # Сделать ход в ячейку
 def step_maps(step, symbol):
-    ind = maps.index(step)
-    maps[ind] = symbol
+    if not check(step) : #если совсем не тудаk
+        print("Ход неверный - вы пропускаете ход ")
+        return
+    else :
+       step =  int(step)
+    if step> 9 :
+        print("Ход неверный - вы пропускаете ход ")
+        return
+    ind = step-1
+    if maps[ind] == step:        #проверяем возможен ли ход
+        maps[ind] = symbol
+
+    else :
+       print ("Место занято - вы пропускаете ход ")
 
 
 # Получить текущий результат игры
 def get_result():
     win = ""
-
+   # print(maps)
     for i in victories:
         if maps[i[0]] == "X" and maps[i[1]] == "X" and maps[i[2]] == "X":
             win = "X"
@@ -71,12 +81,14 @@ while game_over == False:
     # 2. Спросим у играющего куда делать ход
     if player1 == True:
         symbol = "X"
-        step = int(input("Человек 1, ваш ход: "))
     else:
         symbol = "O"
-        step = int(input("Человек 2, ваш ход: "))
+    step = input(f"{symbol}, ваш ход: ")
+    if len(step) > 0 :
+        step_maps(step, symbol)  # делаем ход в указанную ячейку
+    else :
+        print(f'{symbol}  - пропускает ход')
 
-    step_maps(step, symbol)  # делаем ход в указанную ячейку
     win = get_result()  # определим победителя
     if win != "":
         game_over = True
